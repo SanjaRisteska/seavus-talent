@@ -5,6 +5,7 @@ public class Stopwatch {
 	Thread thread;
 	static boolean pause = false;
 	static boolean play = false;
+	static boolean stop = true;
 
 	public Stopwatch() {
 		seconds = 1;
@@ -12,11 +13,13 @@ public class Stopwatch {
 	}
 
 	public void play() {
-
+	if(stop){
+		stop=false;
 		seconds = 1;
 		counter = new Counter(seconds);
 		thread = new Thread(counter);
 		thread.start();
+	}
 
 	}
 
@@ -31,7 +34,7 @@ public class Stopwatch {
 	}
 
 	public void stop() {
-
+		stop = true;
 		thread.interrupt();
 	}
 
