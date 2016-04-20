@@ -9,18 +9,14 @@ import java.util.LinkedList;
 import domain.Book;
 
 public class BookPostgreRepository implements BookRepository {
-	Connection connection;
-
-	public BookPostgreRepository() throws SQLException {
-		
-	}
 
 	@Override
 	public void save(Book book) {
 
 		PreparedStatement preparedStatement;
+		Connection connection = null;
 		try {
-			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Library", "postgres",
+			connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Library", "postgres",
 					"Password1");
 			preparedStatement = connection.prepareStatement("insert into book(isbn, title) values (?, ?)");
 			preparedStatement.setString(1, book.getIsbn());
