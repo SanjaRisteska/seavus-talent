@@ -15,4 +15,8 @@ public class LibraryService {
 		bookRepository.save(book);
 	}
 	
+	public void updateBook(String isbn, String title){
+		
+	}
+	
 }
