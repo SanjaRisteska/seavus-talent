@@ -25,7 +25,7 @@ public class Book extends Publication {
 	}
 
 	public String toString() {
-		return isbn + "\t" + title;
+		return id+" "+isbn + "\t" + title;
 
 	}
 }

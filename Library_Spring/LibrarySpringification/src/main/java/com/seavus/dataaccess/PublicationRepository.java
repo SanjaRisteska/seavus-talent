@@ -10,10 +10,12 @@ public interface PublicationRepository {
 	public void save(Publication publication);
 	public void updateBook(Book book);
 	public void updateMagazine(Magazine magazine);
-	public void deleteBook(String isbn);
-	public void deleteMagazine(String issn);
+	public void deleteBook(Long id);
+	public void deleteMagazine(Long id);
 	public List<Publication> list();
 	public List<Book> listBooks();
+	public List<Magazine> listMagazines();
 	public Book findBook(Long id);
-
+	public Magazine findMagazine(Long id);
+	public Publication findPublication(Long id);
 }

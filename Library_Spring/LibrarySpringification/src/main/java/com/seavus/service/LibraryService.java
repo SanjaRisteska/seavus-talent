@@ -30,13 +30,11 @@ public class LibraryService {
 		this.loanRepository = loanRepository;
 	}
 
-	public void registerBook(String isbn, String title) {
-		Publication book = new Book(isbn, title);
+	public void registerBook(Book book) {
 		publicationRepository.save(book);
 	}
 
-	public void registerMagazine(String issn, String title) {
-		Publication magazine = new Magazine(issn, title);
+	public void registerMagazine(Magazine magazine) {
 		publicationRepository.save(magazine);
 	}
 
@@ -49,29 +47,31 @@ public class LibraryService {
 		List<Book> book = publicationRepository.listBooks();
 		return book;
 	}
+	
+	public List<Magazine> listMagazines() {
+		List<Magazine> magazine = publicationRepository.listMagazines();
+		return magazine;
+	}
 
-	public void updateBook(String isbn, String title) {
-		Book book = new Book(isbn, title);
+	public void updateBook(Book book) {
 		publicationRepository.updateBook(book);
 	}
 
-	public void updateMagazine(String issn, String title) {
-		Magazine magazine = new Magazine(issn, title);
+	public void updateMagazine(Magazine magazine) {
 		publicationRepository.updateMagazine(magazine);
 	}
 
-	public void deleteBook(String isbn) {
+	public void deleteBook(Long id) {
 
-		publicationRepository.deleteBook(isbn);
+		publicationRepository.deleteBook(id);
 	}
 
-	public void deleteMagazine(String issn) {
+	public void deleteMagazine(Long id) {
 
-		publicationRepository.deleteMagazine(issn);
+		publicationRepository.deleteMagazine(id);
 	}
 
-	public void registerMember(String name, String email) {
-		Member member = new Member(name, email);
+	public void registerMember(Member member) {
 		Date startDate = new Date();
 		long ltime = startDate.getTime() + 8 * 24 * 60 * 60 * 1000;
 		Date endDate = new Date(ltime);
@@ -81,8 +81,8 @@ public class LibraryService {
 	}
 
 	public void registerLoan(Long memberId, Long publicationId) {
-		Member member = new Member();
-		Publication publication = new Book();
+		Member member = membershipRepository.findMember(memberId);
+		Publication publication = publicationRepository.findPublication(publicationId);
 		Date startDate = new Date();
 		long ltime = startDate.getTime() + 8 * 24 * 60 * 60 * 1000;
 		Date endDate = new Date(ltime);
@@ -92,6 +92,10 @@ public class LibraryService {
 
 	public Book findBook(Long id) {
 		return publicationRepository.findBook(id);
+	}
+	
+	public Magazine findMagazine(Long id){
+		return publicationRepository.findMagazine(id);
 	}
 
 }

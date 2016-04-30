@@ -57,29 +57,22 @@ color:#4CAF50;
 <body>
 <ul>
   <li><a href="/">Home</a></li>
-  <li><a class="active" href="#">Books</a></li>
+  <li><a href="/books">Books</a></li>
   <li><a href="/magazines">Magazines</a></li>
-  <li><a href="/members">Members</a></li>
+  <li><a class="active" href="#">Members</a></li>
     <li><a href="/loan">Loan</a></li>
+  
 </ul>
 
-<h1>List of books:</h1> <br/>
-	<table>
-		<tr th:each ="book: ${books}">
-		<td><a th:href="@{/books/unregister/{id}(id=${book.id})}">Delete</a></td>
-			<td><a th:href="@{/books/{id}(id=${book.id})}">Edit</a></td>
-			<td th:text="${book.isbn}">ISBN</td>
-			<td th:text="${book.title}">Title</td>
-			</tr>
-	</table>
-	<br/>
-	<br/>
-	<form action="#" th:action="@{/books}" th:object="${book}"
+<h1>Register new member</h1>
+
+	<form action="#" th:action="@{/members}" th:object="${member}"
 		method="post">
-		<input type="hidden" th:field="*{id}"/>
-		<input type="text" th:field="*{isbn}" placeholder="Book ISBN"/>
-		<input type="text" th:field="*{title}" placeholder="Book Title" /> 
-		<input type="submit" value="Register or update book" />
+		<input type="hidden" th:field="*{id}" /> 
+		<p>Name:</p> <input type="text" th:field="*{name}" /> <br/>
+		<p>Email :</p> <input type="text" th:field="*{email}" /> 
+		<br /> <br/>
+		<input type="submit" value="Register member" />
 	</form>
 </body>
 </html>

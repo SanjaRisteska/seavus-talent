@@ -11,6 +11,7 @@ public class Loan extends EntityClass {
 	private Member member;
 	@ManyToOne
 	private Publication publication;
+
 	private Date startDate;
 	private Date endDate;
 
@@ -46,6 +47,14 @@ public class Loan extends EntityClass {
 
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
+	}
+
+	public Publication getPublication() {
+		return publication;
+	}
+
+	public void setPublication(Publication publication) {
+		this.publication = publication;
 	}
 
 }

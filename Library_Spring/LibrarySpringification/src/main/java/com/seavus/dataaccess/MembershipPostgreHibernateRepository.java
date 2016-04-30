@@ -1,5 +1,7 @@
 package com.seavus.dataaccess;
 
+import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -34,6 +36,35 @@ SessionFactory sessionFactory;
 		} finally {
 		    session.close();
 		}
+	}
+
+	@SuppressWarnings("unused")
+	@Override
+	public Member findMember(Long id) {
+		Session session = sessionFactory.openSession();
+		Criteria criteria = session.createCriteria(Member.class);
+		Transaction transaction = null;
+		Member member = null;
+
+		try {
+
+			transaction = session.beginTransaction();
+
+			member = (Member) session.load(Member.class, id);
+			Hibernate.initialize(member);
+			transaction.commit();
+
+		} catch (RuntimeException e) {
+			if (transaction != null) {
+				transaction.rollback();
+			}
+			throw (e);
+
+		} finally {
+			session.close();
+		}
+
+		return member;
 	}
 	
 

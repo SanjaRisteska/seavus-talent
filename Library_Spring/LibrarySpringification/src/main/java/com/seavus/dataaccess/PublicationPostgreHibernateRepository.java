@@ -68,15 +68,15 @@ public class PublicationPostgreHibernateRepository implements PublicationReposit
 		}
 	}
 
-	public void deleteBook(String isbn) {
+	public void deleteBook(Long id) {
 		Session session = sessionFactory.openSession();
 		Transaction transaction = null;
 		try {
 			transaction = session.beginTransaction();
 
-			String hql = "DELETE FROM Book WHERE isbn = :isbn";
+			String hql = "DELETE FROM Book WHERE id = :id";
 			Query query = session.createQuery(hql);
-			query.setParameter("isbn", isbn);
+			query.setParameter("id", id);
 			int result = query.executeUpdate();
 			System.out.println("Rows affected: " + result);
 
@@ -123,10 +123,10 @@ public class PublicationPostgreHibernateRepository implements PublicationReposit
 		try {
 			transaction = session.beginTransaction();
 
-			String hql = "UPDATE Book set title = :title WHERE isbn = :isbn";
+			String hql = "UPDATE Magazine set title = :title WHERE issn = :issn";
 			Query query = session.createQuery(hql);
 			query.setParameter("title", magazine.getTitle());
-			query.setParameter("isbn", magazine.getIssn());
+			query.setParameter("issn", magazine.getIssn());
 			int result = query.executeUpdate();
 			System.out.println("Rows affected: " + result);
 
@@ -142,15 +142,15 @@ public class PublicationPostgreHibernateRepository implements PublicationReposit
 		}
 	}
 
-	public void deleteMagazine(String issn) {
+	public void deleteMagazine(Long id) {
 		Session session = sessionFactory.openSession();
 		Transaction transaction = null;
 		try {
 			transaction = session.beginTransaction();
 
-			String hql = "DELETE FROM Magazine WHERE isbn = :issn";
+			String hql = "DELETE FROM Magazine WHERE id = :id";
 			Query query = session.createQuery(hql);
-			query.setParameter("issn", issn);
+			query.setParameter("id", id);
 			int result = query.executeUpdate();
 			System.out.println("Rows affected: " + result);
 
@@ -192,6 +192,7 @@ public class PublicationPostgreHibernateRepository implements PublicationReposit
 		return results;
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public Book findBook(Long id) {
 
@@ -219,6 +220,89 @@ public class PublicationPostgreHibernateRepository implements PublicationReposit
 		}
 
 		return book;
+	}
+	
+	@SuppressWarnings("unused")
+	public Magazine findMagazine(Long id){
+		Session session = sessionFactory.openSession();
+		Criteria criteria = session.createCriteria(Magazine.class);
+		Transaction transaction = null;
+		Magazine magazine = null;
+
+		try {
+
+			transaction = session.beginTransaction();
+
+			magazine = (Magazine) session.load(Magazine.class, id);
+			Hibernate.initialize(magazine);
+			transaction.commit();
+
+		} catch (RuntimeException e) {
+			if (transaction != null) {
+				transaction.rollback();
+			}
+			throw (e);
+
+		} finally {
+			session.close();
+		}
+
+		return magazine;
+	}
+	
+	
+	@SuppressWarnings("unused")
+	public Publication findPublication(Long id){
+		Session session = sessionFactory.openSession();
+		Criteria criteria = session.createCriteria(Publication.class);
+		Transaction transaction = null;
+		Publication publication = null;
+
+		try {
+
+			transaction = session.beginTransaction();
+
+			publication = (Publication) session.load(Publication.class, id);
+			Hibernate.initialize(publication);
+			transaction.commit();
+
+		} catch (RuntimeException e) {
+			if (transaction != null) {
+				transaction.rollback();
+			}
+			throw (e);
+
+		} finally {
+			session.close();
+		}
+
+		return publication;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Magazine> listMagazines() {
+		Session session = sessionFactory.openSession();
+		Criteria criteria = session.createCriteria(Magazine.class);
+		Transaction transaction = null;
+		List<Magazine> results = null;
+		try {
+
+			transaction = session.beginTransaction();
+			results = criteria.list();
+			transaction.commit();
+
+		} catch (RuntimeException e) {
+			if (transaction != null) {
+				transaction.rollback();
+			}
+			throw (e);
+
+		} finally {
+			session.close();
+		}
+
+		return results;
 	}
 
 }

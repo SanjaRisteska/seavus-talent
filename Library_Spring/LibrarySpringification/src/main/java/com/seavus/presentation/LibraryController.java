@@ -8,6 +8,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.seavus.domain.Book;
+import com.seavus.domain.Magazine;
+import com.seavus.domain.Member;
 import com.seavus.domain.Publication;
 import com.seavus.service.LibraryService;
 
@@ -49,7 +52,8 @@ public class LibraryController {
 				String isbn = in.readLine();
 				System.out.println("Enter book title: ");
 				String title = in.readLine();
-				libraryService.registerBook(isbn, title);
+				Book book = new Book(isbn, title);
+				libraryService.registerBook(book);
 
 			}
 
@@ -58,7 +62,8 @@ public class LibraryController {
 				String issn = in.readLine();
 				System.out.println("Enter magazine title: ");
 				String title = in.readLine();
-				libraryService.registerMagazine(issn, title);
+				Magazine magazine = new Magazine(issn, title);
+				libraryService.registerMagazine(magazine);
 			}
 
 			else if (input.equals("3")) {
@@ -69,45 +74,49 @@ public class LibraryController {
 				}
 
 			} else if (input.equals("4")) {
-				System.out.println("Enter isbn of the book you want to update: ");
-				String isbn = in.readLine();
+				System.out.println("Enter the id of the book you want to update: ");
+				Long id = (long) Integer.parseInt(in.readLine());
 				System.out.println("Enter new title: ");
 				String title = in.readLine();
-				libraryService.updateBook(isbn, title);
+				Book book = libraryService.findBook(id);
+				book.setTitle(title);
+				libraryService.updateBook(book);
 
 			} else if (input.equals("5")) {
-				System.out.println("Enter issn of the magazine you want to update: ");
-				String issn = in.readLine();
+				System.out.println("Enter the id of the magazine you want to update: ");
+				Long id = (long) Integer.parseInt(in.readLine());
 				System.out.println("Enter new title: ");
 				String title = in.readLine();
-				libraryService.updateMagazine(issn, title);
+				Magazine magazine = libraryService.findMagazine(id);
+				magazine.setTitle(title);
+				libraryService.updateMagazine(magazine);
 
 			}
 
 			else if (input.equals("6")) {
-				System.out.println("Enter the isbn of the book you want to delete: ");
-				String isbn = in.readLine();
-				libraryService.deleteBook(isbn);
+				System.out.println("Enter the id of the book you want to delete: ");
+				Long id = (long) Integer.parseInt(in.readLine());
+				libraryService.deleteBook(id);
 
-			} else if(input.equals("7")){
-				System.out.println("Enter the issn of the magazine you want to delete: ");
-				String issn = in.readLine();
-				libraryService.deleteMagazine(issn);
-			} else if(input.equals("8")){
+			} else if (input.equals("7")) {
+				System.out.println("Enter the id of the magazine you want to delete: ");
+				Long id = (long) Integer.parseInt(in.readLine());
+				libraryService.deleteMagazine(id);
+			} else if (input.equals("8")) {
 				System.out.println("Enter name: ");
 				String name = in.readLine();
 				System.out.println("Enter email: ");
 				String email = in.readLine();
-				libraryService.registerMember(name, email);
-			} else if(input.equals("9")){
+				Member member = new Member(name,email);
+				libraryService.registerMember(member);
+			} else if (input.equals("9")) {
 				System.out.println("Enter your id: ");
 				Long memberId = (long) Integer.parseInt(in.readLine());
 				System.out.println("Enter the id of the publication you wish to borrow: ");
 				Long publicationId = (long) Integer.parseInt(in.readLine());
 				libraryService.registerLoan(memberId, publicationId);
 			}
-			
-			
+
 			else if (input.equals("END")) {
 				System.out.println("Goodbye.");
 				System.exit(0);
