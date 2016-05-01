@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<style>
+body{
+background-color: #181818 ;
+color: white;
+font-family: Tahoma;
+}
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover:not(.active) {
+    background-color: #111;
+}
+
+.active {
+    background-color: #4CAF50;
+}
+
+table{
+border: 1px solid white;
+}
+
+
+td{
+padding: 10px;
+}
+
+table a{
+color:white;
+}
+table a:hover, table a:visited{
+color:#4CAF50;
+}
+
+</style>
+</head>
+<body>
+<ul>
+  <li><a href="/">Home</a></li>
+  <li><a class="active" href="#">Books</a></li>
+  <li><a href="/magazines">Magazines</a></li>
+  <li><a href="/members">Members</a></li>
+    <li><a href="/loan">Loan</a></li>
+</ul>
+
+<h1>List of books:</h1> <br/>
+	<table>
+		<tr th:each ="book: ${books}">
+		<td><a th:href="@{/books/unregister/{id}(id=${book.id})}">Delete</a></td>
+			<td><a th:href="@{/books/{id}(id=${book.id})}">Edit</a></td>
+			<td th:text="${book.isbn}">ISBN</td>
+			<td th:text="${book.title}">Title</td>
+			</tr>
+	</table>
+	<br/>
+	<br/>
+	<form action="#" th:action="@{/books}" th:object="${book}"
+		method="post">
+		<input type="hidden" th:field="*{id}"/>
+		<input type="text" th:field="*{isbn}" placeholder="Book ISBN"/>
+		<input type="text" th:field="*{title}" placeholder="Book Title" /> 
+		<input type="submit" value="Register or update book" />
+	</form>
+	<br/> <br/>
+	<h5> Delete a book:</h5>
+	<form action="#" th:action="@{/books/unregister}" th:object="${bookToDelete}" method="post">
+	<input type="hidden" th:field="*{id}"/>
+		<input type="text" th:field="*{isbn}" placeholder="Book ISBN" />
+		<input type="text" th:field="*{title}" placeholder="Book Title"/> 
+		<input type="submit" value="Delete" />
+	</form>
+</body>
+</html>
