@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<style>
+body{
+background-color: #181818 ;
+color: white;
+font-family: Tahoma;
+}
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover:not(.active) {
+    background-color: #111;
+}
+
+.active {
+    background-color: #4CAF50;
+}
+
+table{
+border: 1px solid white;
+}
+
+
+td{
+padding: 10px;
+}
+
+table a{
+color:white;
+}
+table a:hover, table a:visited{
+color:#4CAF50;
+}
+
+</style>
+</head>
+<body>
+<ul>
+		<li><a href="/">Home</a></li>
+		<li><a href="/tweets">Tweets</a></li>
+		<li><a class="active" href="#">Users</a></li>
+	</ul>
+
+<h1>List of users:</h1> <br/>
+	<table>
+		<tr th:each ="user: ${users}">
+			<td th:text="${user.nickName}">Nickname</td>
+			</tr>
+	</table>
+	<br/>
+	<br/>
+
+<h1>Register new user</h1>
+
+	<form action="#" th:action="@{/users}" th:object="${user}"
+		method="post">
+		<input type="hidden" th:field="*{id}" /> 
+		<p>Nickname:</p> <input type="text" th:field="*{nickName}" /> <br/>
+		<br /> <br/>
+		<input type="submit" value="Register user" />
+	</form>
+</body>
+</html>
